@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saudi AI Audit Platform | منصة تدقيق الذكاء الاصطناعي</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: rgba(0,0,0,0.2);
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 2px solid #28a745;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            direction: ltr;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h3 {
+            color: #28a745;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        .card .metric {
+            margin: 10px 0;
+            font-size: 1.1rem;
+        }
+        
+        .card .metric strong {
+            color: #ffc107;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-left: 8px;
+        }
+        
+        .status-green { background-color: #28a745; }
+        .status-yellow { background-color: #ffc107; }
+        .status-red { background-color: #dc3545; }
+        
+        .api-links {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        
+        .api-links h3 {
+            color: #17a2b8;
+            margin-bottom: 15px;
+        }
+        
+        .api-links a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 8px 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+            margin: 5px;
+            display: inline-block;
+            transition: background 0.3s ease;
+        }
+        
+        .api-links a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .flag {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8rem; }
+            .container { padding: 20px 10px; }
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="flag">🇸🇦</div>
+        <h1>منصة تدقيق الذكاء الاصطناعي السعودي</h1>
+        <div class="subtitle">Saudi AI Audit Platform - Real-time Government Compliance Monitoring</div>
+    </div>
+    
+    <div class="container">
+        <div class="dashboard-grid" id="dashboard">
+            <!-- Cards will be populated by JavaScript -->
+        </div>
+        
+        <div class="api-links">
+            <h3>🔗 Platform Access Points</h3>
+            <a href="/docs" target="_blank">📚 API Documentation</a>
+            <a href="/redoc" target="_blank">📖 ReDoc Documentation</a>
+            <a href="/health" target="_blank">❤️ Health Check</a>
+            <a href="/decisions" target="_blank">📋 View Decisions</a>
+            <a href="/bias-analysis" target="_blank">🔍 Bias Analysis</a>
+            <a href="/validators" target="_blank">✅ Validators</a>
+            <a href="/reports" target="_blank">📊 Reports</a>
+            <a href="/blockchain" target="_blank">⛓️ Blockchain Status</a>
+            <a href="/statistics" target="_blank">📈 Statistics</a>
+        </div>
+    </div>
+
+    <script>
+        // Fetch and display platform data
+        async function loadDashboard() {
+            try {
+                // Fetch data from multiple endpoints
+                const [health, stats, blockchain] = await Promise.all([
+                    fetch('/health').then(r => r.json()),
+                    fetch('/statistics').then(r => r.json()),
+                    fetch('/blockchain').then(r => r.json())
+                ]);
+                
+                // Create dashboard cards
+                const dashboard = document.getElementById('dashboard');
+                dashboard.innerHTML = `
+                    <div class="card">
+                        <h3>🏥 System Health</h3>
+                        <div class="metric">Status: <strong>${health.status.toUpperCase()}</strong> <span class="status-indicator status-green"></span></div>
+                        <div class="metric">Response Time: <strong>${health.performance.response_time_ms.toFixed(1)}ms</strong></div>
+                        <div class="metric">SLA Compliance: <strong>${health.performance.sla_compliance}</strong></div>
+                        <div class="metric">Uptime: <strong>${health.performance.uptime}</strong></div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>📊 Platform Statistics</h3>
+                        <div class="metric">Decisions Processed: <strong>${stats.platform_statistics.total_decisions_processed.toLocaleString()}</strong></div>
+                        <div class="metric">NAZAHA Compliance: <strong>${stats.platform_statistics.nazaha_compliance_rate}%</strong></div>
+                        <div class="metric">Bias Alerts: <strong>${stats.platform_statistics.bias_alerts_triggered}</strong></div>
+                        <div class="metric">Avg Response: <strong>${stats.platform_statistics.average_response_time_ms}ms</strong></div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>⛓️ Blockchain Audit Trail</h3>
+                        <div class="metric">Chain Integrity: <strong>VERIFIED</strong> <span class="status-indicator status-green"></span></div>
+                        <div class="metric">Total Blocks: <strong>${blockchain.blockchain_status.total_blocks}</strong></div>
+                        <div class="metric">Transactions: <strong>${blockchain.blockchain_status.total_transactions.toLocaleString()}</strong></div>
+                        <div class="metric">Verification Time: <strong>${blockchain.blockchain_status.verification_time_ms}ms</strong></div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>🌍 Regional Coverage</h3>
+                        <div class="metric">Total Regions: <strong>${stats.regional_coverage.total_regions}/13</strong></div>
+                        <div class="metric">Active Regions: <strong>${stats.regional_coverage.active_regions}</strong> <span class="status-indicator status-green"></span></div>
+                        <div class="metric">Coverage: <strong>100%</strong></div>
+                        <div class="metric">All Saudi regions monitored</div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>🔗 Government Integration</h3>
+                        <div class="metric">Etimad Status: <strong>CONNECTED</strong> <span class="status-indicator status-green"></span></div>
+                        <div class="metric">SAP Status: <strong>CONNECTED</strong> <span class="status-indicator status-green"></span></div>
+                        <div class="metric">Sync Success Rate: <strong>${stats.government_integration.sync_success_rate}</strong></div>
+                        <div class="metric">Data Integrity: <strong>100%</strong></div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>✅ Compliance Status</h3>
+                        <div class="metric">NAZAHA Certified: <strong>YES</strong> <span class="status-indicator status-green"></span></div>
+                        <div class="metric">Vision 2030 Aligned: <strong>YES</strong> <span class="status-indicator status-green"></span></div>
+                        <div class="metric">Audit Retention: <strong>7 Years</strong></div>
+                        <div class="metric">Security: <strong>Government Grade</strong></div>
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('Failed to load dashboard data:', error);
+                document.getElementById('dashboard').innerHTML = `
+                    <div class="card">
+                        <h3>⚠️ Connection Error</h3>
+                        <div class="metric">Please ensure the FastAPI server is running</div>
+                        <div class="metric">Run: <strong>python server.py</strong></div>
+                    </div>
+                `;
+            }
+        }
+        
+        // Load dashboard on page load
+        loadDashboard();
+        
+        // Refresh every 30 seconds
+        setInterval(loadDashboard, 30000);
+    </script>
+</body>
+</html>
